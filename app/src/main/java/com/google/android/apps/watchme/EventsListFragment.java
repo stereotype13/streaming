@@ -17,6 +17,7 @@ package com.google.android.apps.watchme;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.IntentSender;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -39,6 +40,7 @@ import com.google.android.gms.plus.PlusOneButton;
 import com.google.android.gms.plus.model.people.Person;
 
 import java.util.List;
+import java.util.jar.Manifest;
 
 /**
  * @author Ibrahim Ulukaya <ulukaya@google.com>
@@ -48,6 +50,7 @@ import java.util.List;
 public class EventsListFragment extends Fragment implements
         ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
     private static final String TAG = EventsListFragment.class.getName();
     private Callbacks mCallbacks;
     private ImageLoader mImageLoader;
@@ -135,6 +138,12 @@ public class EventsListFragment extends Fragment implements
         }
 
         setProfileInfo();
+
+        int hasGetAccountsPermission = getActivity().checkSelfPermission(android.Manifest.permission.GET_ACCOUNTS);
+        if (hasGetAccountsPermission != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[] {android.Manifest.permission.GET_ACCOUNTS}, REQUEST_CODE_ASK_PERMISSIONS);
+            return;
+        }
         mCallbacks.onConnected(Plus.AccountApi.getAccountName(mGoogleApiClient));
     }
 

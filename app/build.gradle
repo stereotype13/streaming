@@ -2,20 +2,31 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion '25.0.0'
 
     defaultConfig {
         applicationId "com.google.android.apps.watchme"
-        minSdkVersion 16
-        targetSdkVersion 23
+        minSdkVersion 23
+        targetSdkVersion 16
         versionCode 1
         versionName "1.0"
     }
+
+    /*sourceSets {
+        main {
+            jni.srcDirs = ["app/src/main/jni"]
+        }
+    }*/
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    externalNativeBuild {
+        ndkBuild {
+            path 'C:/Users/rhodel/Desktop/yt-live/yt-watchme/app/src/main/jni/Android.mk'
         }
     }
 }
